@@ -22,7 +22,7 @@ else
 	-r)
 		noteName="$2"
 		
-		noteContent=$(cat /usr/share/cnote/notes/$noteName)
+		noteContent=$(cat "/usr/share/cnote/notes/${noteName}")
 		if [ -z $noteName ]; then
 		  	echo -en "note name: "
 		  	read -r noteName
