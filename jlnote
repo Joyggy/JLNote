@@ -1,0 +1,130 @@
+#!/bin/bash
+bold=$( tput bold )
+normal=$( tput sgr0 )
+
+help () {
+	tput bold
+	printf "Parameters:\n-r <note name>: Read a note.\n-n <note name>: Write a new note.\n-l or -ls: Show all notes.\n-cname <note name> <new note name>: Change the note name.\n-d <note name>: Delete Note.\n-dAll: Delete all notes.\n-i: Shows some information about this tool.\n-h: Show this message.\n"
+	tput sgr0
+}
+
+listNotes () {
+	tput bold
+	echo -en "your notes: \n"
+	tput sgr0
+	ls /usr/share/cnote/notes/ | while IFS= read -r line ; do
+    echo "$line"
+	done
+}
+
+if [ -z $1 ]; then
+	help
+else
+	case $1 in
+	-r)
+		noteName="$2"
+		
+		noteContent=$(cat "/usr/share/cnote/notes/${noteName}")
+		if [ -z $noteName ]; then
+		  	echo -en "note name: "
+		  	read -r noteName
+		fi
+		echo "${bold}note:${normal} $noteContent";;
+	-n)
+		if [ -z "${2}" ]; then
+			tput bold
+			echo -en "note name: "
+			tput sgr0
+			read -r newNoteName
+		else
+			newNoteName="${2}"
+		fi
+		if ! [ -z "${3}" ]; then
+			echo "The name has to have no spaces."
+			exit 1
+		fi			
+		if [ -f /usr/share/cnote/notes/$newNoteName ]; then
+			echo "That note name is already used. Please choose a new one."
+			exit 1
+		fi
+		tput bold
+		echo -en "note content: "
+		tput sgr0
+		read -r newNoteContent
+		echo "$newNoteContent" > "/usr/share/cnote/notes/$newNoteName"
+		tput bold
+		echo "NOTE SAVED"
+		tput sgr0;;	
+	-cname)
+		changeName="${2}"
+		changeNewName="${3}"
+
+		if [ -z $changeName ]; then
+			tput bold
+			echo -en "Which note name do you want to change? "
+			tput sgr0
+			read -r changeName
+		fi
+		if [ -z $changeNewName ]; then
+			tput bold
+			echo -en "What would you like to change the name to? "
+			tput sgr0
+			read -r changeNewName
+		fi
+		if ! [ -z "${changeNewName}" ]; then
+			tput bold
+			echo "The name has to have no spaces."
+			tput sgr0
+			exit 1
+		fi			
+		if [ -f /usr/share/cnote/notes/$changeNewName ]; then
+			tput bold
+			echo "That note name is already used. Please choose a new one."
+			tput sgr0
+			exit 1
+		fi
+		cp "/usr/share/cnote/notes/${changeName}" "/usr/share/cnote/notes/${changeNewName}"
+		;;
+	-d)
+		if [ -z $2 ]; then
+			tput bold
+			echo -en "note name: "
+			tput sgr0
+			read deleteNoteName
+		else
+			deleteNoteName="$2"
+		fi
+		if [ -f /usr/share/cnote/notes/$deleteNoteName ]; then
+			tput bold
+			echo "The note doesnt exists."
+			tput bold
+			exit 1
+		fi
+		rm /usr/share/cnote/notes/deleteNoteName;;
+	-dAll)
+		echo -en "Are you sure you want to delete this note? Y or N"
+		read yOrNo
+		case $yOrNo in
+			Y )
+				rm /usr/share/cnote/notes/*
+				tput bold
+				echo "All notes were deleted."
+				tput sgr0;;
+			* )
+				tput bold
+				echo "No notes were deleted."
+				tput sgr0;;
+		esac;;
+	-l)
+		listNotes;;
+	-ls)
+		listNotes;;
+	-h)
+		help;;
+	-i)
+		printf "${bold}JLNote is a minimalistic tool coded in Bash for one line notes. Created by Christian Gerlin Joyggy.${normal}\nJLNote is an abbreviation for Joyggy's Linux Note Tool";;
+	*)
+		echo "invalid parameter. Those are the valid parameters:"
+		help;;
+	esac
+fi
