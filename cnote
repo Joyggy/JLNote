@@ -3,7 +3,7 @@ bold=$( tput bold )
 normal=$( tput sgr0 )
 
 help () {
-	printf "Parameters:\n-r <note name>: Read a note.\n-n <note name>: Write a new note.\n-l or -ls: Show all notes.\n-i: Show the some information about the command.\n-h: Show this message.\n"
+	printf "Parameters:\n-r <note name>: Read a note.\n-n <note name>: Write a new note.\n-l or -ls: Show all notes.\n-i: Shows some information about the command.\n-h: Show this message.\n"
 }
 
 listNotes () {
@@ -42,7 +42,7 @@ else
 			exit 1
 		fi			
 		if [ -f /usr/share/cnote/notes/$newNoteName ]; then
-			echo "The note name is already used. You have to chose a diffrent name."
+			echo "That note name is already used. Please choose a new one."
 			exit 1
 		fi
 		tput bold
@@ -70,7 +70,7 @@ else
 		fi
 		rm /usr/share/cnote/notes/deleteNoteName;;
 	-dAll)
-		echo "Do you really want to delete all notes? Y or N"
+		echo "Are you sure you want to delete this note? Y or N"
 		read yOrNo
 		case $yOrNo in
 			Y )
@@ -90,9 +90,9 @@ else
 	-h)
 		help;;
 	-i)
-		echo "${bold}CNote is minimalistic tool for one line notes made by Christian Gerlin/Joyggy.${normal}";;
+		echo "${bold}CNote is a minimalistic tool coded and designed in Bash for one line notes.  Created by Christian Gerlin Joyggy.${normal}";;
 	*)
-		echo "invalid parameter. Those are valid parameters"
+		echo "invalid parameter. Those are the valid parameters:"
 		help;;
 	esac
 fi
