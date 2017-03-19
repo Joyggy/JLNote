@@ -4,7 +4,15 @@ normal=$( tput sgr0 )
 
 help () {
 	tput bold
-	printf "Parameters:\n-r <note name>: Read a note.\n-n <note name>: Write a new note.\n-l or -ls: Show all notes.\n-cname <note name> <new note name>: Change the note name.\n-d <note name>: Delete Note.\n-dAll: Delete all notes.\n-i: Shows some information about this tool.\n-h: Show this message.\n"
+	echo "note"
+	echo "     -r <note name>: Read a note."
+	echo "     -n <note name>: Write a new note."
+	echo "     -l: Show all notes."
+	echo "     -cname <note name> <new note name>: Change the note name."
+	echo "     -d <note name>: Delete Note."
+	echo "     -dAll: Delete all notes."
+	echo "     -i: Shows some information about this tool."
+	echo "     -h: Show this message."
 	tput sgr0
 }
 
