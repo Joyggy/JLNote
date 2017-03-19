@@ -122,7 +122,7 @@ else
 	-h)
 		help;;
 	-i)
-		printf "${bold}JLNote is a minimalistic tool coded in Bash for one line notes. Created by Christian Gerlin Joyggy.${normal}\nJLNote is an abbreviation for Joyggy's Linux Note Tool";;
+		printf "${bold}JLNote is a minimalistic tool coded in Bash for one line notes. Created by Christian Gerlin Joyggy.\nJLNote is an abbreviation for Joyggy's Linux Note Tool${normal}";;
 	*)
 		echo "invalid parameter. Those are the valid parameters:"
 		help;;
