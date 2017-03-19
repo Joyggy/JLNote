@@ -1,5 +1,5 @@
 # cnote
-CNote is a minimalistic tool coded and designed in Bash for one line notes.  Created by Christian Gerlin Joyggy.
+CNote is a minimalistic tool coded and designed in Bash for one line notes.  Created by Christian Gerlin/Joyggy.
 
 I tested this software on debian jessie. 
 
