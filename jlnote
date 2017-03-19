@@ -12,7 +12,7 @@ listNotes () {
 	tput bold
 	echo -en "your notes: \n"
 	tput sgr0
-	ls /usr/share/cnote/notes/ | while IFS= read -r line ; do
+	ls /usr/share/jlnote/notes/ | while IFS= read -r line ; do
     echo "$line"
 	done
 }
@@ -24,7 +24,7 @@ else
 	-r)
 		noteName="$2"
 		
-		noteContent=$(cat "/usr/share/cnote/notes/${noteName}")
+		noteContent=$(cat "/usr/share/jlnote/notes/${noteName}")
 		if [ -z $noteName ]; then
 		  	echo -en "note name: "
 		  	read -r noteName
@@ -43,7 +43,7 @@ else
 			echo "The name has to have no spaces."
 			exit 1
 		fi			
-		if [ -f /usr/share/cnote/notes/$newNoteName ]; then
+		if [ -f /usr/share/jlnote/notes/$newNoteName ]; then
 			echo "That note name is already used. Please choose a new one."
 			exit 1
 		fi
@@ -51,7 +51,7 @@ else
 		echo -en "note content: "
 		tput sgr0
 		read -r newNoteContent
-		echo "$newNoteContent" > "/usr/share/cnote/notes/$newNoteName"
+		echo "$newNoteContent" > "/usr/share/jlnote/notes/$newNoteName"
 		tput bold
 		echo "NOTE SAVED"
 		tput sgr0;;	
@@ -77,13 +77,13 @@ else
 			tput sgr0
 			exit 1
 		fi			
-		if [ -f /usr/share/cnote/notes/$changeNewName ]; then
+		if [ -f /usr/share/jlnote/notes/$changeNewName ]; then
 			tput bold
 			echo "That note name is already used. Please choose a new one."
 			tput sgr0
 			exit 1
 		fi
-		cp "/usr/share/cnote/notes/${changeName}" "/usr/share/cnote/notes/${changeNewName}"
+		cp "/usr/share/jlnote/notes/${changeName}" "/usr/share/jlnote/notes/${changeNewName}"
 		;;
 	-d)
 		if [ -z $2 ]; then
@@ -94,19 +94,19 @@ else
 		else
 			deleteNoteName="$2"
 		fi
-		if [ -f /usr/share/cnote/notes/$deleteNoteName ]; then
+		if [ -f /usr/share/jlnote/notes/$deleteNoteName ]; then
 			tput bold
 			echo "The note doesnt exists."
 			tput bold
 			exit 1
 		fi
-		rm /usr/share/cnote/notes/deleteNoteName;;
+		rm /usr/share/jlnote/notes/deleteNoteName;;
 	-dAll)
 		echo -en "Are you sure you want to delete this note? Y or N"
 		read yOrNo
 		case $yOrNo in
 			Y )
-				rm /usr/share/cnote/notes/*
+				rm /usr/share/jlnote/notes/*
 				tput bold
 				echo "All notes were deleted."
 				tput sgr0;;
