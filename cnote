@@ -1,0 +1,98 @@
+#!/bin/bash
+bold=$( tput bold )
+normal=$( tput sgr0 )
+
+help () {
+	printf "Parameters:\n-r <note name>: Read a note.\n-n <note name>: Write a new note.\n-l or -ls: Show all notes.\n-i: Show the some information about the command.\n-h: Show this message.\n"
+}
+
+listNotes () {
+	tput bold
+	echo -en "your notes: \n"
+	tput sgr0
+	ls /usr/share/cnote/notes/ | while IFS= read -r line ; do
+    echo "$line"
+	done
+}
+
+if [ -z $1 ]; then
+	help
+else
+	case $1 in
+	-r)
+		noteName="$2"
+		
+		noteContent=$(cat /usr/share/cnote/notes/$noteName)
+		if [ -z $noteName ]; then
+		  	echo -en "note name: "
+		  	read -r noteName
+		fi
+		echo "${bold}note:${normal} $noteContent";;
+	-n)
+		if [ -z "${2}" ]; then
+			tput bold
+			echo -en "note name: "
+			tput sgr0
+			read -r newNoteName
+		else
+			newNoteName="${2}"
+		fi
+		if ! [ -z "${3}" ]; then
+			echo "The name has to have no spaces."
+			exit 1
+		fi			
+		if [ -f /usr/share/cnote/notes/$newNoteName ]; then
+			echo "The note name is already used. You have to chose a diffrent name."
+			exit 1
+		fi
+		tput bold
+		echo -en "note content: "
+		tput sgr0
+		read -r newNoteContent
+		echo "$newNoteContent" > "/usr/share/cnote/notes/$newNoteName"
+		tput bold
+		echo "NOTE SAVED"
+		tput sgr0;;	
+	-d)
+		if [ -z $2 ]; then
+			tput bold
+			echo -en "note name: "
+			tput sgr0
+			read deleteNoteName
+		else
+			deleteNoteName="$2"
+		fi
+		if [ -f /usr/share/cnote/notes/$deleteNoteName ]; then
+			tput bold
+			echo "The note doesnt exists."
+			tput bold
+			exit 1
+		fi
+		rm /usr/share/cnote/notes/deleteNoteName;;
+	-dAll)
+		echo "Do you really want to delete all notes? Y or N"
+		read yOrNo
+		case $yOrNo in
+			Y )
+				rm /usr/share/cnote/notes/*
+				tput bold
+				echo "All notes were deleted."
+				tput sgr0;;
+			* )
+				tput bold
+				echo "No notes were deleted."
+				tput sgr0;;
+		esac;;
+	-l)
+		listNotes;;
+	-ls)
+		listNotes;;
+	-h)
+		help;;
+	-i)
+		echo "${bold}CNote is minimalistic tool for one line notes made by Christian Gerlin/Joyggy.${normal}";;
+	*)
+		echo "invalid parameter. Those are valid parameters"
+		help;;
+	esac
+fi
