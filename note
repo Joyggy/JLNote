@@ -18,11 +18,20 @@ help () {
 
 listNotes () {
 	tput bold
-	echo -en "your notes: \n"
 	tput sgr0
-	ls /usr/share/jlnote/notes/ | while IFS= read -r line ; do
+	lsNotes=$( ls /usr/share/jlnote/notes/ | while IFS= read -r line ; do 
     echo "$line"
-	done
+	done )
+	if [ -z $lsNotes ]; then
+		tput bold
+		echo "You dont have any notes."
+		tput sgr0
+	else
+		tput bold
+		echo -en "your notes: \n"
+		tput sgr0
+		echo "${lsNotes}"
+	fi
 }
 
 if [ -z $1 ]; then
@@ -58,13 +67,16 @@ else
 		tput bold
 		echo -en "note content: "
 		tput sgr0
+
+		noteDir="/usr/share/jlnote/notes/"
+
 		read -r newNoteContent
-		echo "$newNoteContent" > "/usr/share/jlnote/notes/$newNoteName"
+		echo "$newNoteContent" > ${noteDir}/${newNoteName}
 		tput bold
 		echo "NOTE SAVED"
 		tput sgr0;;	
 	-cname)
-		changeName="${2}"
+		changeName="${2}" 
 		changeNewName="${3}"
 
 		if [ -z $changeName ]; then
@@ -102,15 +114,18 @@ else
 		else
 			deleteNoteName="$2"
 		fi
-		if [ -f /usr/share/jlnote/notes/$deleteNoteName ]; then
+		if ! [ -f /usr/share/jlnote/notes/${deleteNoteName} ]; then
 			tput bold
 			echo "The note doesnt exists."
 			tput bold
 			exit 1
 		fi
-		rm /usr/share/jlnote/notes/deleteNoteName;;
+		rm /usr/share/jlnote/notes/${deleteNoteName}
+		echo "NOTE DELETED";;
 	-dAll)
-		echo -en "Are you sure you want to delete this note? Y or N"
+		tput bold
+		echo "Are you sure you want to delete all note? Y or N"
+		tput sgr0
 		read yOrNo
 		case $yOrNo in
 			Y )
