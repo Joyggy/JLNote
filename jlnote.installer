@@ -1,1 +1,3 @@
 cp note /usr/bin/note
+mkdir /usr/share/jlnote/
+mkdir /usr/share/jlnote/notes/
