@@ -3,7 +3,9 @@ bold=$( tput bold )
 normal=$( tput sgr0 )
 
 help () {
-	printf "Parameters:\n-r <note name>: Read a note.\n-n <note name>: Write a new note.\n-l or -ls: Show all notes.\n-i: Shows some information about the command.\n-h: Show this message.\n"
+	tput bold
+	printf "Parameters:\n-r <note name>: Read a note.\n-n <note name>: Write a new note.\n-l or -ls: Show all notes.\n-cname <note name> <new note name>: Change the note name.\n-d <note name>: Delete Note.\n-dAll: Delete all notes.\n-i: Shows some information about this tool.\n-h: Show this message.\n"
+	tput sgr0
 }
 
 listNotes () {
@@ -53,6 +55,36 @@ else
 		tput bold
 		echo "NOTE SAVED"
 		tput sgr0;;	
+	-cname)
+		changeName="${2}"
+		changeNewName="${3}"
+
+		if [ -z $changeName ]; then
+			tput bold
+			echo -en "Which note name do you want to change? "
+			tput sgr0
+			read -r changeName
+		fi
+		if [ -z $changeNewName ]; then
+			tput bold
+			echo -en "What would you like to change the name to? "
+			tput sgr0
+			read -r changeNewName
+		fi
+		if ! [ -z "${changeNewName}" ]; then
+			tput bold
+			echo "The name has to have no spaces."
+			tput sgr0
+			exit 1
+		fi			
+		if [ -f /usr/share/cnote/notes/$changeNewName ]; then
+			tput bold
+			echo "That note name is already used. Please choose a new one."
+			tput sgr0
+			exit 1
+		fi
+		cp "/usr/share/cnote/notes/${changeName}" "/usr/share/cnote/notes/${changeNewName}"
+		;;
 	-d)
 		if [ -z $2 ]; then
 			tput bold
@@ -70,7 +102,7 @@ else
 		fi
 		rm /usr/share/cnote/notes/deleteNoteName;;
 	-dAll)
-		echo "Are you sure you want to delete this note? Y or N"
+		echo -en "Are you sure you want to delete this note? Y or N"
 		read yOrNo
 		case $yOrNo in
 			Y )
@@ -90,7 +122,7 @@ else
 	-h)
 		help;;
 	-i)
-		echo "${bold}CNote is a minimalistic tool coded and designed in Bash for one line notes.  Created by Christian Gerlin Joyggy.${normal}";;
+		printf "${bold}JLNote is a minimalistic tool coded in Bash for one line notes. Created by Christian Gerlin Joyggy.${normal}\nJLNote is an abbreviation for Joyggy's Linux Note Tool";;
 	*)
 		echo "invalid parameter. Those are the valid parameters:"
 		help;;
