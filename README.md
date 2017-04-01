@@ -1,5 +1,5 @@
 # JLNote
 I tested JLNote on debian jessie. 
 
-I publish this software under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
-If you have any questions you can contact me.
+The whole software is under the GPL Versio 3. Read the license file for more information.
+If you have any questions, can contact me.
