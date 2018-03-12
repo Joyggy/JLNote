@@ -72,7 +72,7 @@ else
 		noteDir="/usr/share/jlnote/notes/"
 
 		read -r newNoteContent
-		echo "$newNoteContent" > ${noteDir}/${newNoteName}
+		echo "$newNoteContent" > ${noteDir}${newNoteName}
 		tput bold
 		echo "NOTE SAVED"
 		tput sgr0;;	
